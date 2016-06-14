@@ -67,7 +67,7 @@ public:
 
 	char* c_str() const 
 	{ 
-	return p->data; 
+		return p->data; 
 	}
 
 	void decreas_counter(){
@@ -97,40 +97,41 @@ public:
 };
 
 bool operator==(const String& a, const String& b){
-		if (a.p->size != b.p->size) {
-			return false;
-		}
+	if (a.p == b.p) { return true; }
+ 	if (b.p->size != a.p->size) {
+ 			return false;
+ 	}
 	
-        for (int i = 0; i < b.p->size; ++i) {
-            if (a.p->data[i] != b.p->data[i])
-                return false;
-		}
-		return true;
-	}
+	for (int i = 0; i < b.p->size; ++i) {
+		if (b.p->data[i] != a.p->data[i])
+			return false;
+ 		}
+	return true;
+}
 
 bool operator!=(const String& a, const String& b){
-		return !(operator== (a,b));
-	}
+	return !(operator== (a,b));
+}
 
 String operator+(const String& a, const String& s){
-		int new_size = s.p->size + a.p->size;
-	    char * b = new char [new_size];
-		memcpy(b, a.p->data, a.p->size);
-		memcpy(b+a.p->size, s.p->data, s.p->size);
-		b[new_size] = '\0';
-		String c(b);
-		return c;
-	}
+	int new_size = s.p->size + a.p->size;
+	char * b = new char [new_size];
+	memcpy(b, a.p->data, a.p->size);
+	memcpy(b+a.p->size, s.p->data, s.p->size);
+	b[new_size] = '\0';
+	String c(b);
+	return c;
+}
 
 String& operator+=(String& a, String& b){
-		int new_size = b.p->size + a.p->size;
-		char * c = new char[new_size+1];
-		c[new_size] = '\0';
-		memcpy(c, a.p->data, a.p->size);
-		memcpy(c+a.p->size, b.p->data, b.p->size);
-		a.decreas_counter();
-		a.p = new Representation(c, new_size);
-		return a;
+	int new_size = b.p->size + a.p->size;
+	char * c = new char[new_size+1];
+	c[new_size] = '\0';
+	memcpy(c, a.p->data, a.p->size);
+	memcpy(c+a.p->size, b.p->data, b.p->size);
+	a.decreas_counter();
+	a.p = new Representation(c, new_size);
+	return a;
 }
 
 TEST(String, EQ){
@@ -214,11 +215,6 @@ TEST(String, assign){
 }
 
 int main(int argc, char *argv[]){
-	String a("qwe"), b("asd"); 
-	String c = a += b; 
-	cout<< c.c_str();
-
-
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
