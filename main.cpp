@@ -11,12 +11,12 @@ struct Representation
 	int size;
 	int n;
 	Representation(const char * buf, int s): size(s){ 
-		data = new char[size];
+		data = new char[size+1];
+		data[size] = '\0';
 		memcpy(data, buf, size);
 		n = 1;
 	}
-	~Representation(){
-		delete[] data;}
+	~Representation(){ delete[] data;}
 	Representation * Copy(){
 		if (n == 1) return this;
 		n--;
@@ -27,32 +27,28 @@ struct Representation
 class String{
 	
 struct CharReference{
-        String *s;
-        int i;
-		CharReference(String* b, int a):s(b),i(a){}
-		CharReference &operator= (char c){
+	String *s;
+    int i;
+	CharReference(String* b, int a):s(b),i(a){}
+	CharReference &operator= (char c){
 		s->p= s->p->Copy();
 		s->p->data[i] = c;
 		return *this;
-		}
-		operator char(){
+	}
+	operator char(){
 		return s->p->data[i];
-		}
+	}
 };	
 public:
 	CharReference operator[](int k){
 		 return CharReference(this, k);
 	}
 
-	
-
 public:
 	Representation * p;
-
 	char operator[](int i) const {
         return p->data[i];
     }
-
 	String(){
 		p = new Representation("", 0);
 	}
@@ -68,6 +64,11 @@ public:
 	friend bool operator!=(const String& a, const String& b);
 	friend String operator+(const String& a, const String& b);
 	friend String& operator+=(String& a, String& b);
+
+	char* c_str() const 
+	{ 
+	return p->data; 
+	}
 
 	void decreas_counter(){
 		p->n--;
@@ -123,7 +124,8 @@ String operator+(const String& a, const String& s){
 
 String& operator+=(String& a, String& b){
 		int new_size = b.p->size + a.p->size;
-		char * c = new char[new_size];
+		char * c = new char[new_size+1];
+		c[new_size] = '\0';
 		memcpy(c, a.p->data, a.p->size);
 		memcpy(c+a.p->size, b.p->data, b.p->size);
 		a.decreas_counter();
@@ -212,6 +214,11 @@ TEST(String, assign){
 }
 
 int main(int argc, char *argv[]){
+	String a("qwe"), b("asd"); 
+	String c = a += b; 
+	cout<< c.c_str();
+
+
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
