@@ -125,7 +125,7 @@ String operator+(const String& a, const String& s){
 
 String& operator+=(String& a, String& b){
 	int new_size = b.p->size + a.p->size;
-	char * c = new char[new_size+1];
+	char * c = new char[new_size];
 	c[new_size] = '\0';
 	memcpy(c, a.p->data, a.p->size);
 	memcpy(c+a.p->size, b.p->data, b.p->size);
