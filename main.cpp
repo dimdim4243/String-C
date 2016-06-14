@@ -38,14 +38,21 @@ struct CharReference{
 		operator char(){
 		return s->p->data[i];
 		}
-    };	
+};	
 public:
 	CharReference operator[](int k){
 		 return CharReference(this, k);
-		}
+	}
+
+	
 
 public:
 	Representation * p;
+
+	char operator[](int i) const {
+        return p->data[i];
+    }
+
 	String(){
 		p = new Representation("", 0);
 	}
@@ -89,13 +96,12 @@ public:
 };
 
 bool operator==(const String& a, const String& b){
-		if (a.p == b.p) { return true; }
-		if (b.p->size != a.p->size) {
+		if (a.p->size != b.p->size) {
 			return false;
 		}
 	
         for (int i = 0; i < b.p->size; ++i) {
-            if (b.p->data[i] != a.p->data[i])
+            if (a.p->data[i] != b.p->data[i])
                 return false;
 		}
 		return true;
