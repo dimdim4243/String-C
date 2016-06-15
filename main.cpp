@@ -101,11 +101,10 @@ bool operator==(const String& a, const String& b){
  	if (b.p->size != a.p->size) {
  			return false;
  	}
-	
 	for (int i = 0; i < b.p->size; ++i) {
 		if (b.p->data[i] != a.p->data[i])
 			return false;
- 		}
+ 	}
 	return true;
 }
 
@@ -125,7 +124,7 @@ String operator+(const String& a, const String& s){
 
 String& operator+=(String& a, String& b){
 	int new_size = b.p->size + a.p->size;
-	char * c = new char[new_size];
+	char * c = new char[new_size+1];
 	c[new_size] = '\0';
 	memcpy(c, a.p->data, a.p->size);
 	memcpy(c+a.p->size, b.p->data, b.p->size);
@@ -137,13 +136,13 @@ String& operator+=(String& a, String& b){
 TEST(String, EQ){
 	String a("abg");
 	String b("abg");
-    ASSERT_TRUE(String("asd") == String("asd"));
+	ASSERT_TRUE(String("asd") == String("asd"));
 	ASSERT_TRUE(a == b);
 };
 TEST(String, noEQ){
 	String a("arhg");
 	String b("abg");
-    ASSERT_TRUE(String("asd") != String("ard"));
+	ASSERT_TRUE(String("asd") != String("ard"));
 	ASSERT_TRUE(a != b);
 };
 
@@ -151,41 +150,41 @@ TEST(String, noEQ){
 TEST(String, Add_1){
 	String a("bpk");
 	String b("gdp");
-    ASSERT_TRUE(( String("dsa")+String("aba")) == String("dsaaba"));
+	ASSERT_TRUE(( String("dsa")+String("aba")) == String("dsaaba"));
 	ASSERT_TRUE((a + b) == String("bpkgdp"));
 	String c = a + b;
 	ASSERT_TRUE(c == String("bpkgdp"));
-	String d("K");
+	String d;
 	d.p = c.p->Copy();
 	ASSERT_TRUE( d ==  c);
 };
 TEST(String, Add_2){
 	String a("cops");
 	String b("abab");
-    ASSERT_TRUE((String("aba") += String("dsa")) == String("abadsa"));
+	ASSERT_TRUE((String("aba") += String("dsa")) == String("abadsa"));
 	a+=b;
 	ASSERT_TRUE( a == String("copsabab"));
 };
 
 
 TEST(String, Char){
-    String a("bad");
-    ASSERT_TRUE(a[0] == 'b');
-    ASSERT_TRUE(a[1] == 'a');
-    ASSERT_TRUE(a[2] == 'd');
+	String a("bad");
+	ASSERT_TRUE(a[0] == 'b');
+	ASSERT_TRUE(a[1] == 'a');
+	ASSERT_TRUE(a[2] == 'd');
 };
 
 TEST(String, Copy){
-    String a("gec");
+	String a("gec");
 	String b("ijqwen");
 	a.p = b.p->Copy();
-    ASSERT_TRUE(a == b);
+	ASSERT_TRUE(a == b);
 };
 
 TEST(String, Change){
-    String a("bads");
-    a[0] = 'a';
-    ASSERT_TRUE(a == String("aads"));
+	String a("bads");
+	a[0] = 'a';
+	ASSERT_TRUE(a == String("aads"));
 	String b("q");
 	b.p = a.p->Copy();
 	a[1] = 'd';
@@ -199,11 +198,10 @@ TEST(String, cut){
 	String m  = a(1,1);
 	String c;
 	c.p = b.p->Copy();
-	ASSERT_EQ( c , String("ad"));
-	ASSERT_EQ( b , String("ad"));
-	ASSERT_EQ( d , String("a"));
-	ASSERT_EQ( m , String(""));
-
+	ASSERT_EQ(c , String("ad"));
+	ASSERT_EQ(b , String("ad"));
+	ASSERT_EQ(d , String("a"));
+	ASSERT_EQ(m , String(""));
 }
 
 TEST(String, assign){
